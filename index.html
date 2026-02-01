@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>8-Ball Billiards (MVP)</title>
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+  <div id="uiTop">
+    <div id="hud">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <div>Player: <span id="currentPlayer" style="font-weight:bold;">1</span></div>
+          <div>Group: <span id="groupType">None</span></div>
+      </div>
+      
+      <!-- Ball Tracker Row -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+         <div style="text-align:left;">
+            <div style="font-size:10px; color:#aaa; margin-bottom:2px;">P1 Balls</div>
+            <div id="p1Balls" style="display:flex; gap:3px; min-width:100px; height:16px;"></div>
+         </div>
+         
+         <div style="opacity:0.3; font-size:12px;">|</div>
+
+         <div style="text-align:right;">
+            <div style="font-size:10px; color:#aaa; margin-bottom:2px;">P2 Balls</div>
+            <div id="p2Balls" style="display:flex; gap:3px; justify-content:flex-end; min-width:100px; height:16px;"></div>
+         </div>
+      </div>
+
+      <div id="msg" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:5px;">Press &lt;R&gt; to Restart</div>
+    </div>
+    <div id="controls">
+      <button id="restartBtn">Restart (R)</button>
+      <button id="pauseBtn">Pause (P)</button>
+    </div>
+    
+    <!-- Spin Control -->
+    <div id="spinContainer" style="pointer-events: auto; margin-left:10px; display:flex; flex-direction:column; align-items:center;">
+        <div id="spinLabel" style="font-size:10px; color:#ccc; margin-bottom:2px;">Cue Spin</div>
+        <div id="spinCircle" style="width:60px; height:60px; background:radial-gradient(circle at 35% 35%, #fff, #eee 40%, #ccc 80%, #999); border-radius:50%; box-shadow:0 0 5px rgba(0,0,0,0.5); position:relative; cursor:crosshair; border:2px solid rgba(255,255,255,0.2);">
+            <div id="spinDot" style="width:8px; height:8px; background:#f00; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; box-shadow:0 0 2px black;"></div>
+            <!-- Crosshairs -->
+            <div style="position:absolute; top:50%; left:0; width:100%; height:1px; background:rgba(0,0,0,0.1); pointer-events:none;"></div>
+            <div style="position:absolute; left:50%; top:0; width:1px; height:100%; background:rgba(0,0,0,0.1); pointer-events:none;"></div>
+        </div>
+    </div>
+  </div>
+
+    <!-- Turn Popup -->
+    <div id="turnPopup" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.8); color:white; padding:20px 40px; border-radius:10px; font-size:24px; pointer-events:none; opacity:0; transition:opacity 0.2s; z-index:100; text-align:center;">
+        Player <span id="popupPlayerNum">1</span>'s Turn
+    </div>
+
+  <div id="canvasWrap">
+    <canvas id="tableCanvas" width="1000" height="600"></canvas>
+  </div>
+
+  <div id="footer" style="position: absolute; bottom: 10px; width: 100%; text-align: center; pointer-events: none; opacity: 0.6;">
+    <small>Mouse/touch: aim by moving cursor, drag back to set power, release to shoot. Ball-in-hand shown after fouls.</small>
+  </div>
+
+  <script src="main.js?v=2"></script>
+</body>
+</html>
