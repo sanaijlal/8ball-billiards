@@ -61,10 +61,13 @@
     _toLocal(e,touch){
       const rect = this.canvas.getBoundingClientRect();
       const client = touch || e;
-      // Map screen coords to logical canvas size (CSS pixels)
+      // Map screen coords to logical canvas size, accounting for canvas scaling
+      const scaleX = this.canvas.width / rect.width;
+      const scaleY = this.canvas.height / rect.height;
+      const dpr = window.devicePixelRatio || 1;
       return {
-        x: (client.clientX - rect.left),
-        y: (client.clientY - rect.top)
+        x: (client.clientX - rect.left) * scaleX / dpr,
+        y: (client.clientY - rect.top) * scaleY / dpr
       };
     }
 
@@ -945,26 +948,27 @@
   class Renderer{
     constructor(canvas){
       this.ctx = canvas.getContext('2d');
-      // DPI Scaling for sharp rendering
+      this.canvas = canvas;
+      this.debug = false;
+      this.resizeCanvas();
+      
+      // Handle window resize for responsive design
+      window.addEventListener('resize', () => this.resizeCanvas());
+    }
+    
+    resizeCanvas(){
       const dpr = window.devicePixelRatio || 1;
-      // Get the computed visual size (from CSS or attributes)
-      const rect = canvas.getBoundingClientRect();
+      const rect = this.canvas.getBoundingClientRect();
       
-      // 1. Set the physical buffer size to (visual size * dpr)
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      // Set physical size
+      this.canvas.width = rect.width * dpr;
+      this.canvas.height = rect.height * dpr;
       
-      // 2. Force the CSS display size to match the original visual size
-      // This prevents the browser from expanding the canvas to the new large physical size
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
-      
-      // 3. Scale drawing context
+      // Scale context
       this.ctx.scale(dpr, dpr);
       
       this.w = rect.width;
       this.h = rect.height;
-      this.debug = false;
     }
 
     render(game){
